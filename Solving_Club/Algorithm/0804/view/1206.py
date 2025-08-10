@@ -2,6 +2,7 @@ import sys
 
 sys.stdin = open('sample_input.txt')
 
+
 def my_max(*lst):
     list_max = lst[0]
     for num in lst[1:]:

@@ -2,6 +2,7 @@ import sys
 
 sys.stdin = open('input.txt')
 
+
 def dump_box(temp, count):
     for _ in range(count):
         min_value = temp[0]
