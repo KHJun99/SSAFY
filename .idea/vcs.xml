@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Online_Lab/python_ws_4_3" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Online_Lab/python_ws_4_4" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/study" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/study/Queue" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/study/Stack2/4874(Forth)" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/study/Stack2/4880(토너먼트 카드게임)" vcs="Git" />
+  </component>
+</project>
