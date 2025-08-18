@@ -3,16 +3,24 @@
 N = int(input())
 arr = list(map(int, input().split()))
 
-max_count = 0
-count = 1
-for i in range(N - 1):
-    if arr[i] <= arr[i + 1]:
-        count += 1
-    elif arr[i] >= arr[i + 1]:
-        count += 1
-    else:
-        if count > max_count:
-            max_count = count
-        count = 0
+count_1 = 1  # 오름차순(=non-decreasing) 길이
+count_2 = 1  # 내림차순(=non-increasing) 길이
+max_count_1 = 1
+max_count_2 = 1
 
-print(max_count)
+for i in range(N - 1):
+    # non-decreasing
+    if arr[i] <= arr[i + 1]:
+        count_1 += 1
+    else:
+        count_1 = 1
+    max_count_1 = max(max_count_1, count_1)
+
+    # non-increasing
+    if arr[i] >= arr[i + 1]:
+        count_2 += 1
+    else:
+        count_2 = 1
+    max_count_2 = max(max_count_2, count_2)
+
+print(max(max_count_1, max_count_2))
