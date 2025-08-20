@@ -12,9 +12,6 @@ N = int(input())
 dice_1 = list(map(int, input().split()))
 dice = [list(map(int, input().split())) for _ in range(N - 1)]
 
-min_val = float('inf')
-a = dice_1[0] + dice_1[5]
-b = dice_1[1] + dice_1[3]
-c = dice_1[2] + dice_1[4]
+op = {0 : 5, 1 : 3, 2 : 4, 5 : 0, 3 : 1, 4 : 2}
 
 
