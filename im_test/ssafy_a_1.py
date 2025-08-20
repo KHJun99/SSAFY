@@ -17,8 +17,8 @@ N개의 나무가 있다. 초기의 각 나무의 키가 주어진다.
 첫째 날에 물을 주게 되면, 나무의 높이를 모두 4로 만들기 위해서는 3일째까지 물을 주어야 한다.
 둘째 날은 아무 일도 안 하게 된다. 하지만, 첫째 날을 쉬고 둘째 날에 물을 주면 2일 만에 나무의 높이가 모두 4가 된다.
 """
-# import sys
-# sys.stdin = open('tree_sample_input.txt')
+import sys
+sys.stdin = open('tree_sample_input.txt')
 
 T = int(input())
 for tc in range(1, T + 1):
@@ -30,6 +30,7 @@ for tc in range(1, T + 1):
     tall_tree = max(tree)
     if sum(tree) // N == max(tree):
         day = 0
+
     else:
         for i in range(N):
             if tree[i] != tall_tree:
