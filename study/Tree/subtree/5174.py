@@ -17,7 +17,7 @@ for tc in range(1, T + 1):
     for parent, child in zip(node_to_node[0::2], node_to_node[1::2]):
         bt_lst[parent].append(child)
 
-    # DFS
+    # BFS
     node_cnt = 0
     stack = [N]
     while stack:
