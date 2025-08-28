@@ -24,10 +24,23 @@
 
 N, K = map(int, input().split())
 
-thing = {}
+thing = []
 for _ in range(N):
     W, V = map(int, input().split())
-    thing[W] = V
+    thing.append((W, V))
 
 max_val = float('-inf')
 
+for _ in range(N):
+    weight = K
+    val = []
+    for i in range(N):
+        if thing[i][0] <= weight:
+            val.append(thing[i][1])
+            weight -= thing[i][0]
+    if max_val < sum(val):
+        max_val = sum(val)
+
+    thing.append(thing.pop(0))
+
+print(max_val)
