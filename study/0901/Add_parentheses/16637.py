@@ -34,7 +34,6 @@ def apply(a, op, b):
 
 def caculator(lst):
     cacu = deque()
-
     while lst:
         element = lst.pop(0)
         # 숫자 처리 (한 자리수 전제)
@@ -48,14 +47,12 @@ def caculator(lst):
         else:
             # 그 외 토큰 무시
             continue
-
         # 요소를 넣은 "후"에 [숫자, 연산자, 숫자]가 되면 즉시 계산
         if len(cacu) == 3:
             a = cacu.popleft()
             b = cacu.popleft()
             c = cacu.popleft()
             cacu.append(apply(a, b, c))
-
     # 결과 반환: 정수 하나만 남아야 정상
     return cacu[0] if len(cacu) == 1 else None
 
@@ -63,25 +60,17 @@ def caculator(lst):
 N = int(input())
 exp = list(input())
 
-# 수식안에 포함된 숫자 개수
-rep = 0
-for idx in exp:
-    if idx.isdigit():
-       rep += 1
-
-
 result = []
+
 # 괄호를 넣지 않은 경우
 result.append(caculator(exp))
 
-# 괄호를 추가한 경우
-for i in range(N // 2):
-    for j in range(len(exp)):
-        if exp[j] in '+-*':
-            a = int(exp.pop(j - 1))
-            b = exp.pop(j)
-            c = int(exp.pop(j + 1))
-            exp.insert(j, caculator(a, b, c))
-        result.append(caculator(exp))
+for i in range(1, len(exp), 2):
+    if exp[i] in '-+*':
+        a = exp.pop(i - 1)
+        b = exp.pop(i)
+        c = exp.pop(i + 1)
+        exp.insert(i, apply(a, b, c))
+    result.append(caculator(exp))
 
 print(result)

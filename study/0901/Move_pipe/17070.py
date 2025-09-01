@@ -28,5 +28,8 @@
 	    ↓ (세로)	아래 칸이 비어 있어야 함
 	    ↘ (대각선)	오른쪽, 아래, 오른쪽아래 3칸이 모두 비어 있어야 함
 """
+def side_check(x, y):
+
+
 N = int(input())
 house = [list(map(int, input().split()))for _ in range(N)]
