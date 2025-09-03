@@ -21,3 +21,23 @@
 - 색종이를 붙이는 과정에서 부분적으로 0을 덮으면 안 된다.
 - 사용할 수 있는 색종이 개수는 크기별 최대 5장.
 """
+from collections import deque
+def square(lst,x , y):
+    n = 10
+    for size in range(5, 0, -1):
+        for r in range(n - size + 1):
+            for c in range(n - size + 1):
+                sub_paper = [row[c:c+size] for row in lst[r:r+size]]
+
+
+
+
+# def bfs(lst):
+#     for r in range(10):
+#         for c in range(10):
+#             if lst[r][c] == 1:
+
+
+paper = [list(map(int, input().split())) for _ in range(10)]
+
+print(all(paper))

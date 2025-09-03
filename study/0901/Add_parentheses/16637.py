@@ -20,7 +20,6 @@
 - 겹치기 금지: 인접한 두 연산자에 동시에 괄호를 씌울 수 없음.
 - 결과는 음수가 될 수 있음(정수 범위 주의: 구현 시 64-bit 정수 권장).
 """
-from collections import deque
 def apply(a, op, b):
     if op == '+':
         return a + b
@@ -29,94 +28,64 @@ def apply(a, op, b):
     if op == '*':
         return a * b
 
+
 def cacu(lst):
     n = len(lst)
-    for idx in range(1, n, 2):
-        a = lst.pop(idx - 1)
-        b = lst.pop(idx)
-        c = lst.pop(idx + 1)
-        result = apply(a, b, c)
-        print(result)
+    stack = []
+    temp = 0
+    # 괄호 없이 계산
+    for idx in range(n):
+        stack.append(lst[idx])
+        if len(stack) == 3:
+            c = stack.pop()
+            b = stack.pop()
+            a = stack.pop()
+            stack.append(apply(a, b, c))
+    if len(stack) == 1:
+        temp = stack.pop()
+        stack.clear()
+
+    return temp
+
 
 N = int(input())
-exp = deque(input())
+exp = list(input())
 
 # 숫자는 int 형으로 변환
 for i in range(len(exp)):
     if exp[i].isdigit():
         exp[i] = int(exp[i])
 
-cacu(exp)
+result= []
+result.append(cacu(exp))
+for i in range(1, N, 2):
+    temp1 = exp[:]
+    temp2 = exp[:]
+    temp1[i-1:i+2] = [apply(temp1[i-1], temp1[i], temp1[i+1])]
+    result.append(cacu(temp1))
+    if i + 1 < len(temp2):  # 최소 (a op b) 성립 체크
+        positions = []  # 괄호 칠 연산자 인덱스들 모으기
+        p = i
+        while p + 1 < len(temp2):  # p-1, p, p+1 접근 가능
+            positions.append(p)
+            p += 4  # 서로 안 겹치도록 4칸 간격
 
+        # 원본 temp2 기준으로 먼저 값 계산 (각 구간은 서로 불연속)
+        vals = {p: apply(temp2[p - 1], temp2[p], temp2[p + 1]) for p in positions}
 
+        # 인덱스 붕괴 방지를 위해 '오른쪽부터' 치환
+        for p in reversed(positions):
+            temp2[p - 1:p + 2] = [vals[p]]
 
+        result.append(cacu(temp2))
+    # j = i + 4
+    # if j + 1 < len(temp2):  # FIX: 경계 체크 보강
+    #     # 두 괄호의 값은 '원본 temp2' 기준으로 먼저 계산
+    #     v_left = apply(temp2[i - 1], temp2[i], temp2[i + 1])  # FIX: -2 보정 제거
+    #     v_right = apply(temp2[j - 1], temp2[j], temp2[j + 1])  # FIX: -2 보정 제거
+    #     # 오른쪽 덩어리부터 치환 → 왼쪽 인덱스가 안 흔들림
+    #     temp2[j - 1:j + 2] = [v_right]  # FIX: 동시대입 제거, 우측 먼저
+    #     temp2[i - 1:i + 2] = [v_left]  # FIX: 좌측 나중에 대입
+    #     result.append(cacu(temp2))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# from collections import deque
-#
-#
-# def apply(a, op, b):
-#     if op == '+':
-#         return a + b
-#     if op == '-':
-#         return a - b
-#     if op == '*':
-#         return a * b
-#
-#
-# def caculator(lst):
-#     cacu = deque()
-#     while lst:
-#         element = lst.pop(0)
-#         # 숫자 처리 (한 자리수 전제)
-#         if element.isdigit():
-#             cacu.append(int(element))
-#         # 연산자 처리
-#         elif element in '+-*':
-#             # 직전에 숫자 한 개만 있을 때만 연산자 허용
-#             if len(cacu) == 1:
-#                 cacu.append(element)
-#         else:
-#             # 그 외 토큰 무시
-#             continue
-#         # 요소를 넣은 "후"에 [숫자, 연산자, 숫자]가 되면 즉시 계산
-#         if len(cacu) == 3:
-#             a = cacu.popleft()
-#             b = cacu.popleft()
-#             c = cacu.popleft()
-#             cacu.append(apply(a, b, c))
-#     # 결과 반환: 정수 하나만 남아야 정상
-#     return cacu[0] if len(cacu) == 1 else None
-#
-#
-# N = int(input())
-# exp = list(input())
-#
-# result = []
-#
-# # 괄호를 넣지 않은 경우
-# result.append(caculator(exp))
-#
-# for i in range(1, len(exp), 2):
-#     if exp[i] in '-+*':
-#         a = exp.pop(i - 1)
-#         b = exp.pop(i)
-#         c = exp.pop(i + 1)
-#         exp.insert(i, apply(a, b, c))
-#     result.append(caculator(exp))
-#
-# print(result)
+print(max(result))
