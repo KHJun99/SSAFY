@@ -21,8 +21,6 @@
 - 결과는 음수가 될 수 있음(정수 범위 주의: 구현 시 64-bit 정수 권장).
 """
 from collections import deque
-
-
 def apply(a, op, b):
     if op == '+':
         return a + b
@@ -31,46 +29,94 @@ def apply(a, op, b):
     if op == '*':
         return a * b
 
-
-def caculator(lst):
-    cacu = deque()
-    while lst:
-        element = lst.pop(0)
-        # 숫자 처리 (한 자리수 전제)
-        if element.isdigit():
-            cacu.append(int(element))
-        # 연산자 처리
-        elif element in '+-*':
-            # 직전에 숫자 한 개만 있을 때만 연산자 허용
-            if len(cacu) == 1:
-                cacu.append(element)
-        else:
-            # 그 외 토큰 무시
-            continue
-        # 요소를 넣은 "후"에 [숫자, 연산자, 숫자]가 되면 즉시 계산
-        if len(cacu) == 3:
-            a = cacu.popleft()
-            b = cacu.popleft()
-            c = cacu.popleft()
-            cacu.append(apply(a, b, c))
-    # 결과 반환: 정수 하나만 남아야 정상
-    return cacu[0] if len(cacu) == 1 else None
-
+def cacu(lst):
+    n = len(lst)
+    for idx in range(1, n, 2):
+        a = lst.pop(idx - 1)
+        b = lst.pop(idx)
+        c = lst.pop(idx + 1)
+        result = apply(a, b, c)
+        print(result)
 
 N = int(input())
-exp = list(input())
+exp = deque(input())
 
-result = []
+# 숫자는 int 형으로 변환
+for i in range(len(exp)):
+    if exp[i].isdigit():
+        exp[i] = int(exp[i])
 
-# 괄호를 넣지 않은 경우
-result.append(caculator(exp))
+cacu(exp)
 
-for i in range(1, len(exp), 2):
-    if exp[i] in '-+*':
-        a = exp.pop(i - 1)
-        b = exp.pop(i)
-        c = exp.pop(i + 1)
-        exp.insert(i, apply(a, b, c))
-    result.append(caculator(exp))
 
-print(result)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# from collections import deque
+#
+#
+# def apply(a, op, b):
+#     if op == '+':
+#         return a + b
+#     if op == '-':
+#         return a - b
+#     if op == '*':
+#         return a * b
+#
+#
+# def caculator(lst):
+#     cacu = deque()
+#     while lst:
+#         element = lst.pop(0)
+#         # 숫자 처리 (한 자리수 전제)
+#         if element.isdigit():
+#             cacu.append(int(element))
+#         # 연산자 처리
+#         elif element in '+-*':
+#             # 직전에 숫자 한 개만 있을 때만 연산자 허용
+#             if len(cacu) == 1:
+#                 cacu.append(element)
+#         else:
+#             # 그 외 토큰 무시
+#             continue
+#         # 요소를 넣은 "후"에 [숫자, 연산자, 숫자]가 되면 즉시 계산
+#         if len(cacu) == 3:
+#             a = cacu.popleft()
+#             b = cacu.popleft()
+#             c = cacu.popleft()
+#             cacu.append(apply(a, b, c))
+#     # 결과 반환: 정수 하나만 남아야 정상
+#     return cacu[0] if len(cacu) == 1 else None
+#
+#
+# N = int(input())
+# exp = list(input())
+#
+# result = []
+#
+# # 괄호를 넣지 않은 경우
+# result.append(caculator(exp))
+#
+# for i in range(1, len(exp), 2):
+#     if exp[i] in '-+*':
+#         a = exp.pop(i - 1)
+#         b = exp.pop(i)
+#         c = exp.pop(i + 1)
+#         exp.insert(i, apply(a, b, c))
+#     result.append(caculator(exp))
+#
+# print(result)
