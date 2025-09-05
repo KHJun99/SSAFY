@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>pjt-01-home</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <!-- Story Script 폰트 다운로드 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Story+Script&display=swap" rel="stylesheet">
+  <style>
+    /* Scory Script 폰트 적용 */
+    * {
+      font-family: "Story Script",
+        sans-serif;
+      font-weight: 400;
+      font-style: normal;
+    }
+
+    /* Navbar position sticky 사용 */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    /* 배경이랑 폰트 색깔이 비슷하여 화이트로 변경 */
+    .nav-link {
+      color: white;
+    }
+
+    /* 기본: 화면 < 1400px 에서는 100% */
+    .header-wrap {
+      width: 100%;
+      margin-inline: auto;
+      /* 가운데 정렬 */
+    }
+
+    /* 화면 ≥ 1400px 에서는 1320px 고정 */
+    @media (min-width:1400px) {
+      .header-wrap {
+        width: 1320px;
+      }
+    }
+
+    /* 이미지 높이 고정 */
+    .card-img-top {
+      height: 600px;
+    }
+
+    /* 영화 제목 크기 및 볼드체 사용 */
+    .card-title {
+      font-size: 23px;
+      font-weight: bold;
+    }
+
+    /* === Dark Theme Tokens === */
+    :root {
+      --bg: #0e0f13;
+      --surface: #151821;
+      --surface-2: #1c2030;
+      --border: #2a3042;
+      --text: #e7eaf1;
+      --muted: #a7b0c3;
+      --primary: #7aa2ff;
+      /* 포인트 컬러 */
+      --primary-2: #96b6ff;
+      /* hover 밝음 */
+      --ring: 0 0 0 3px rgba(122, 162, 255, 0.25);
+    }
+
+    /* 기본 바탕/글자 */
+    html,
+    body {
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    /* 본문은 시스템 폰트, 브랜드/헤더에만 Story Script */
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Apple SD Gothic Neo, "맑은 고딕", sans-serif;
+    }
+
+    .story,
+    h1,
+    .navbar-brand {
+      font-family: "Story Script", cursive;
+    }
+
+    /* 링크/포커스 */
+    a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: var(--primary-2);
+    }
+
+    :focus-visible {
+      outline: none;
+      box-shadow: var(--ring);
+      border-radius: 8px;
+    }
+
+    /* Navbar */
+    .navbar {
+      backdrop-filter: saturate(120%) blur(6px);
+      background: rgba(10, 12, 18, 0.75) !important;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .navbar .nav-link {
+      color: var(--text) !important;
+      opacity: .9;
+    }
+
+    .navbar .nav-link:hover {
+      opacity: 1;
+      color: var(--primary-2) !important;
+    }
+
+    .navbar .navbar-toggler {
+      border-color: var(--border);
+    }
+
+    .navbar .navbar-toggler:focus {
+      box-shadow: var(--ring);
+    }
+
+    /* 헤더 캐러셀 */
+    .header-wrap {
+      margin-block: 16px 28px;
+    }
+
+    /* Header Carousel 이미지: 원본 비율 유지 + 반응형 */
+    .carousel .carousel-item img {
+      width: 100%;
+      height: auto;
+      /* 고정 높이 제거 → 원본 비율 유지 */
+      max-height: 80vh;
+      /* 화면 높이 80%까지만 제한 (너무 커지지 않게) */
+      object-fit: contain;
+      /* 이미지 전체가 잘리지 않고 보이도록 */
+      border-radius: 18px;
+      transition: transform 0.5s ease, filter 0.5s ease, box-shadow 0.5s ease;
+    }
+
+    .carousel .carousel-item img:hover {
+      transform: scale(1.03);
+      filter: brightness(1.1) saturate(1.2);
+      box-shadow: 0 12px 28px rgba(122, 162, 255, 0.35);
+      border: 1px solid rgba(122, 162, 255, 0.45);
+    }
+    
+
+    /* 좌우 컨트롤 배경 조금 보이게 */
+    .carousel-control-prev,
+    .carousel-control-next {
+      filter: drop-shadow(0 4px 14px rgba(0, 0, 0, .6));
+    }
+
+    /* 섹션 타이틀 */
+    .movie-information h1 {
+      color: var(--text);
+      letter-spacing: 1px;
+      text-shadow: 0 2px 20px rgba(0, 0, 0, .35);
+      margin-bottom: 18px;
+    }
+
+    /* 카드 */
+    .card {
+      background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, .25);
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, .35);
+      border-color: rgba(122, 162, 255, .35);
+    }
+
+    .card-img-top {
+      height: 420px;
+      object-fit: cover;
+    }
+
+    .card-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .card-text {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* 모달 (로그인) */
+    .modal-content {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    .modal-header,
+    .modal-footer {
+      border-color: var(--border);
+    }
+
+    .form-label {
+      color: var(--muted);
+    }
+
+    .form-control {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .form-control::placeholder {
+      color: #80879a;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: var(--ring);
+    }
+
+    /* 버튼 */
+    .btn-primary {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-2);
+      border-color: var(--primary-2);
+    }
+
+    .btn-secondary {
+      background: #2b3042;
+      border-color: #2b3042;
+      color: var(--text);
+    }
+
+    .btn-secondary:hover {
+      background: #343b54;
+      border-color: #343b54;
+    }
+
+    /* 사진 alt 대비 향상 (이미지는 그대로 두고 figcaption 느낌) */
+    .card img+.card-body {
+      border-top: 1px solid rgba(255, 255, 255, .04);
+    }
+
+    /* 컨테이너 여백 */
+    .container {
+      padding-bottom: 40px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <!-- 메인 페이지 상단의 Navbar 구현 -->
+  <!-- Modal 컴포넌트를 활용하여 "로그인" 창 구현 -->
+  <nav class="navbar navbar-expand-lg bg-dark">
+    <div class="container-fluid">
+      <img src="images/logo.png" width="100" alt="logo">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav ms-auto align-items-end align-items-lg-center text-end">
+          <li class="nav-item">
+            <a class="nav-link" href="01-home.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="02-community.html">Community</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Modal -->
+  <!-- 로그인 창  -->
+  <div class="modal" id="loginModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Login</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label">ID</label>
+              <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+            </div>
+            We'll never share your email with anyone else. <br><br>
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label">Password</label>
+              <input type="password" class="form-control" id="exampleFormControlInput1">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <!-- Carousel component를 활용하여 Header 섹션 구현 -->
+  <header class="header-wrap">
+    <div id="carouselExample" class="carousel slide">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="images/header1.jpg" class="d-block w-100" alt="다스 베이더">
+        </div>
+        <div class="carousel-item">
+          <img src="images/header2.jpg" class="d-block w-100" alt="스파이더맨">
+        </div>
+        <div class="carousel-item">
+          <img src="images/header3.jpg" class="d-block w-100" alt="조커">
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </header>
+  <!-- Section -->
+  <!-- Card component 사용, 영화 정보 요소들을 반응형으로 배치되도록 구현 -->
+  <section class="movie-information">
+    <h1 style="text-align: center; font-size: 100px; font-weight:bold">Box Office</h1>
+    <div class="container">
+      <!-- xs:1열, md(≥768px):2열, lg(≥992px):3열 + 좌우 간격 g-4 -->
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+
+        <div class="col">
+          <div class="card h-100">
+            <img src="images/movie1.jpg" class="card-img-top" alt="쇼생크탈출">
+            <div class="card-body">
+              <h5 class="card-title">The Shawshank Redemption</h5>
+              <p class="card-text">The Shawshank Redemption is a timeless drama about hope and friendship, following a
+                banker’s decades-long quest for freedom and redemption inside Shawshank State Prison.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card h-100">
+            <img src="images/movie2.jpg" class="card-img-top" alt="쉰들러 리스트">
+            <div class="card-body">
+              <h5 class="card-title">Schindler's List</h5>
+              <p class="card-text">Schindler’s List is a haunting, Oscar-winning drama about a German industrialist
+                who risks everything to save more than a thousand Jews during the Holocaust.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card h-100">
+            <img src="images/movie3.jpg" class="card-img-top" alt="다크 나이트">
+            <div class="card-body">
+              <h5 class="card-title">The Dark Knight</h5>
+              <p class="card-text">The Dark Knight is a gritty, high-stakes crime thriller where Batman confronts the
+                anarchic Joker, testing Gotham’s soul and his own moral limits.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card h-100">
+            <img src="images/movie4.jpg" class="card-img-top" alt="파이트 클럽">
+            <div class="card-body">
+              <h5 class="card-title">Fight Club</h5>
+              <p class="card-text">Fight Club is a provocative satire where a sleepless office worker and a charismatic
+                soap maker start an underground fight club that mutates into a violent anti-consumerist movement.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card h-100">
+            <img src="images/movie5.jpg" class="card-img-top" alt="대부">
+            <div class="card-body">
+              <h5 class="card-title">The Godfather</h5>
+              <p class="card-text">The Godfather is an epic saga of family, power, and loyalty turned betrayal, as
+                reluctant son Michael Corleone is drawn into his father’s crime empire.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card h-100">
+            <img src="images/movie6.jpg" class="card-img-top" alt="반지의 제왕">
+            <div class="card-body">
+              <h5 class="card-title">The Lord of the Rings</h5>
+              <p class="card-text">The Lord of the Rings is an epic fantasy saga where a humble hobbit and a fellowship
+                of unlikely allies journey to destroy the One Ring and save Middle-earth.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

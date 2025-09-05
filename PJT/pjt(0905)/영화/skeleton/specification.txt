@@ -1,0 +1,39 @@
+요구사항
+
+1. 메인 페이지(필수)
+  - 영화 목록이 출력되는 메인 페이지
+    - Navbar
+      - 요구사항 번호 : F01, F02
+      - Bootstrap Navbar Component를 활용하여 구현
+        - 스크롤 하더라도 항상 화면의 최상단에 고정되어야 함
+        - 로고 이미지는 제공된 logo.png 사용
+      - 네비게이션 메뉴에 Home, Community, Login 항목 추가
+        - Home 클릭 시 01-home.html로 이동
+        - Community 클릭 시 02-community.html로 이동
+        - Login 클릭 시 Login Modal 출력
+        - 화면 폭이 992px 미만일 때, 메뉴 항목들이 토글 버튼 형태로 전환되도록 구현
+      - Bootstrap Modal Component를 활용하여 Login Modal 구현
+        - 내부에는 form 태그를 활용하여 로그인 창 구현
+    - Header
+      - 구현한 Navbar 아래에 Header를 구현
+      - 요구사항 번호 : F03
+      - 화면 폭에 따라 header의 폭을 조정
+        - 화면 폭이 1400px 이상일 때, Header의 width는 1320px 고정
+        - 화면 폭이 1400px 미만일 때, Header의 width는 100%
+      - Bootstrap Carousel Component를 활용하여 구현
+        - 최소 3장의 이미지가 슬라이드로 순환해 출력하도록 구현
+    - Section
+      - 구현한 Header 아래에 Section을 구현
+      - 요구사항 번호 :F04, F05
+      - 영화의 정보를 담는 복수의 요소들로 구성
+      - 각각 요소들은 Bootstrap Card Component를 활용하여 구현
+        - 영화, 포스터, 제목, 설명을 포함
+        - 각 Card의 높이는 모두 같아야 함
+        - 좌우로 서로 일정한 간격을 가짐
+      - 화면의 폭에 따라 한 줄에 배치되는 Card의 개수를 변경
+        - 화면 폭이 768px 미만일 때 한 줄에 하나의 Card 출력
+        - 화면 폭이 992px 이상일 때 한 줄에 3개의 Card 출력
+        - 그 외 한 줄에 2개의 Card 출력
+2. 커뮤니티 페이지 (필수)
+   - Aside & Section
+   - Pagination
