@@ -20,7 +20,7 @@ sys.stdin = open('input.txt', 'r')
 
 
 def bfs():
-
+    pass
 
 T = int(input())
 for tc in range(T):
@@ -30,4 +30,4 @@ for tc in range(T):
     for _ in range(M):
         s, e = map(int, input().split())
         graph.append((s, e))
-
+    print(graph)
