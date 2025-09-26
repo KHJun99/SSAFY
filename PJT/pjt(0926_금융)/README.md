@@ -110,7 +110,6 @@ class Comment(models.Model):
 * **뷰 구성:** `index(검색, GET) / fetch(수집, POST) / list(목록, GET) / delete(삭제, POST)`
 * **템플릿:** `base.html` 상속으로 공통 레이아웃 유지, `index.html`/`list.html`은 콘텐츠 블록만 구현
 * **ORM:** `bulk_create()`로 다건 저장, `order_by("-id")`로 최근순 정렬, `get_object_or_404()`로 안전한 단건 접근
-* **CSRF:** 모든 POST 폼에 `{% csrf_token %}` 적용
 
 ---
 
