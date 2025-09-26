@@ -1,0 +1,14 @@
+{% extends "crawlings/base.html" %}
+{% block title %}주식 댓글 분석기 - 검색{% endblock %}
+{% block content %}
+  <div class="card">
+    <form class="search-row" action="{% url 'crawlings:fetch' %}" method="post">
+      {% csrf_token %}
+      <label for="company_name">회사 이름을 입력하세요:</label>
+      <input id="company_name" type="text" name="company_name" placeholder="예) 삼성전자" required>
+      <button class="btn" type="submit">검색</button>
+      <a class="btn secondary" href="{% url 'crawlings:list' %}">전체 목록</a>
+    </form>
+    {% if error %}<div class="spacer"></div><p class="muted">{{ error }}</p>{% endif %}
+  </div>
+{% endblock %}

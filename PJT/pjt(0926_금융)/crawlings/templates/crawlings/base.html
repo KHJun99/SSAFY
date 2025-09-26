@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>
+      {% block title %}
+        주식 댓글 분석기
+      {% endblock %}
+    </title>
+
+    <style>
+      :root {
+        --bg: #f6f7fb;
+        --card: #ffffff;
+        --text: #111111;
+        --muted: #6b7280;
+        --accent: #111111;
+        --radius: 16px;
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+      }
+      
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Apple SD Gothic Neo, Noto Sans KR, Helvetica, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      
+      a {
+        color: var(--text);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      
+      .wrap {
+        max-width: 880px;
+        margin: 40px auto;
+        padding: 0 16px;
+      }
+      
+      /* 상단 네비 */
+      .nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0 0 14px;
+      }
+      .brand {
+        font-weight: 900;
+        letter-spacing: -0.3px;
+      }
+      
+      /* 히어로 */
+      .hero {
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+        margin-bottom: 24px;
+      }
+      .hero .bar {
+        width: 6px;
+        background: var(--accent);
+        border-radius: 6px;
+        min-height: 64px;
+        margin-top: 6px;
+      }
+      .hero h1 {
+        margin: 0;
+        font-size: 36px;
+        letter-spacing: -0.5px;
+      }
+      .hero p {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 15px;
+      }
+      
+      /* 카드/폼 */
+      .card {
+        background: var(--card);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 20px;
+      }
+      .search-row {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      label {
+        font-weight: 600;
+      }
+      input[type='text'] {
+        flex: 1;
+        min-width: 220px;
+        padding: 10px 12px;
+        font-size: 15px;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        outline: none;
+        background: #ffffff;
+      }
+      input[type='text']:focus {
+        border-color: #111111;
+      }
+      .btn {
+        cursor: pointer;
+        border: 1px solid #111111;
+        background: #111111;
+        color: #ffffff;
+        border-radius: 10px;
+        padding: 10px 16px;
+        font-weight: 600;
+      }
+      .btn.secondary {
+        background: #f3f4f6;
+        color: #111111;
+        border-color: #e5e7eb;
+      }
+      .spacer {
+        height: 12px;
+      }
+      .section-title {
+        margin: 0 0 10px;
+        font-size: 18px;
+      }
+      .headline {
+        font-size: 22px;
+        font-weight: 800;
+        margin: 0 0 6px;
+      }
+      .muted {
+        color: var(--muted);
+      }
+      
+      /* 댓글 리스트 - 가독성 강화 */
+      ul.comments {
+        list-style: none;
+        padding-left: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .comment-item {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        justify-content: space-between;
+        padding: 12px 14px;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        background: #ffffff;
+      }
+      .comment-item:nth-child(even) {
+        background: #fafafa;
+      } /* 지브라 효과 */
+      .comment-left {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        flex: 1;
+      }
+      .dot {
+        width: 8px;
+        height: 8px;
+        background: #111111;
+        border-radius: 50%;
+        margin-top: 9px;
+        flex: 0 0 8px;
+      }
+      .comment-body {
+        flex: 1;
+      }
+      .comment-text {
+        font-size: 16px;
+        line-height: 1.8;
+        letter-spacing: -0.2px;
+        word-break: keep-all;
+        overflow-wrap: anywhere;
+      }
+      .comment-meta {
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .btn-del {
+        align-self: center;
+        margin-left: 12px;
+        font-size: 12px;
+        border: 1px solid #d1d5db;
+        background: #ffffff;
+        border-radius: 8px;
+        padding: 6px 10px;
+        cursor: pointer;
+      }
+      .btn-del:hover {
+        background: #f3f4f6;
+      }
+      
+      .footer {
+        color: var(--muted);
+        font-size: 12px;
+        text-align: center;
+        margin: 24px 0;
+      }
+    </style>
+
+    {% block head %}
+    {% endblock %}
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="nav">
+        <div class="brand">Stock Voice</div>
+        <div>
+          <a href="{% url 'crawlings:index' %}">검색</a> ·
+          <a href="{% url 'crawlings:list' %}">목록</a>
+        </div>
+      </div>
+
+      <div class="hero">
+        <div class="bar"></div>
+        <div>
+          <h1>주식 댓글 분석기</h1>
+          <p>주식에 대한, 투자자들의 목소리</p>
+        </div>
+      </div>
+
+      {% block content %}
+      {% endblock %}
+
+      <div class="footer">
+        ©{% now 'Y' %} Stock Voice
+      </div>
+    </div>
+  </body>
+</html>

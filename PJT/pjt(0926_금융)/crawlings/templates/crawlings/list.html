@@ -1,0 +1,44 @@
+{% extends "crawlings/base.html" %}
+{% block title %}주식 댓글 분석기 - 결과{% endblock %}
+
+{% block content %}
+  <div class="card">
+    {% if company or code %}
+      <h2 class="headline">
+        {{ company|default:"최근 저장" }}{% if code %} <span class="muted">({{ code }})</span>{% endif %}
+      </h2>
+    {% else %}
+      <h2 class="headline">저장된 댓글</h2>
+    {% endif %}
+    <p class="section-title">수집된 댓글:</p>
+
+    <ul class="comments">
+      {% for c in comments %}
+      <li class="comment-item">
+        <div class="comment-left">
+          <div class="dot"></div>
+          <div class="comment-body">
+            <div class="comment-text">{{ c.content }}</div>
+            <div class="comment-meta">
+              {{ c.company_name }} · {{ c.stock_code }} · {{ c.created_at|date:"Y-m-d H:i" }}
+            </div>
+          </div>
+        </div>
+        <form action="{% url 'crawlings:delete' c.id %}?company={{ company|urlencode }}&code={{ code|urlencode }}" method="post">
+          {% csrf_token %}
+          <button class="btn-del" type="submit" aria-label="댓글 삭제">삭제</button>
+        </form>
+      </li>
+      {% empty %}
+      <li class="comment-item">
+        <div class="comment-left">
+          <div class="dot"></div>
+          <div class="comment-body">
+            <div class="comment-text muted">아직 저장된 댓글이 없습니다.</div>
+          </div>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}
