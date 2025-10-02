@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-4">
+  <h2 class="h4 mb-3">도서 등록</h2>
+  <form method="POST" class="card p-3 shadow-sm">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <!-- as_p 유지: 기존 스타일 최대한 유지. 위젯에 form-control 지정됨 -->
+    <div class="d-flex gap-2">
+      <button class="btn btn-success" type="submit">저장</button>
+      <a class="btn btn-outline-secondary" href="{% url 'books:index' %}">목록</a>
+    </div>
+  </form>
+</div>
+{% endblock content %}

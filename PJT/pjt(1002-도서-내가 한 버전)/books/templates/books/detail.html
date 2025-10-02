@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4">
+  <h1 class="h4 mb-3">도서 상세</h1>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="h5">{{ book.title }}</h2>
+      <p class="mb-1"><b>저자:</b> {{ book.author }}</p>
+      <p class="mb-1"><b>평점:</b> {{ book.rating }}</p>
+      <p class="mb-3"><b>설명:</b><br>{{ book.description|linebreaksbr }}</p>
+
+      <div class="d-flex gap-2">
+        <a class="btn btn-primary" href="{% url 'books:update' book.pk %}">수정</a>
+
+        <!-- 삭제는 POST only -->
+        <form action="{% url 'books:delete' book.pk %}" method="POST" onsubmit="return confirm('정말 삭제할까요?');">
+          {% csrf_token %}
+          <button class="btn btn-danger" type="submit">삭제</button>
+        </form>
+
+        <a class="btn btn-outline-secondary" href="{% url 'books:index' %}">목록</a>
+      </div>
+    </div>
+    <div class="card-footer small text-muted">
+      등록: {{ book.created_at|date:"Y-m-d H:i" }} · 수정: {{ book.updated_at|date:"Y-m-d H:i" }}
+    </div>
+  </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,8 @@
+<div class="container py-4">
+  <h1 class="h4 mb-3">로그인</h1>
+  <form action="{% url 'accounts:login' %}" method="POST" class="card p-3 shadow-sm">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-primary" type="submit">로그인</button>
+  </form>
+</div>

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">메인 페이지</h1>
+
+    <div class="btn-group">
+      {% if user.is_authenticated %}
+        <a class="btn btn-outline-secondary" href="{% url 'accounts:update' %}">내 정보</a>
+        <form action="{% url 'accounts:logout' %}" method="POST" class="d-inline">
+          {% csrf_token %}
+          <button class="btn btn-outline-danger" type="submit">로그아웃</button>
+        </form>
+      {% else %}
+        <a class="btn btn-primary" href="{% url 'accounts:login' %}">로그인</a>
+        <a class="btn btn-outline-primary" href="{% url 'accounts:signup' %}">회원가입</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-between align-items-center mb-2">
+    <h2 class="h5 mb-0">도서 목록</h2>
+    {% if user.is_authenticated %}
+      <a class="btn btn-success" href="{% url 'books:create' %}">도서 등록</a>
+    {% endif %}
+  </div>
+
+  {% if books %}
+    <div class="row g-3">
+      {% for book in books %}
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title mb-1">{{ book.title }}</h5>
+              <div class="text-muted small mb-2">저자: {{ book.author }} · 평점: {{ book.rating }}</div>
+              <p class="card-text text-truncate" style="-webkit-line-clamp:2; display:-webkit-box; -webkit-box-orient: vertical;">
+                {{ book.description }}
+              </p>
+              <a class="btn btn-sm btn-primary" href="{% url 'books:detail' book.pk %}">상세</a>
+            </div>
+            <div class="card-footer small text-muted">
+              등록: {{ book.created_at|date:"Y-m-d H:i" }}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-info">아직 도서가 없습니다.</div>
+  {% endif %}
+</div>
+{% endblock content %}

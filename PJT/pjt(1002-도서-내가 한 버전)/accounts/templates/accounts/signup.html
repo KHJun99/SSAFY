@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-4">
+  <h1 class="h4 mb-3">회원가입</h1>
+
+  <form action="{% url 'accounts:signup' %}" method="POST" class="card p-3 shadow-sm">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {# form.as_p를 유지: 기존 구조를 크게 바꾸지 않음 #}
+
+    <div class="d-flex gap-2 mt-2">
+      <button type="submit" class="btn btn-primary">회원가입</button>
+      <a href="{% url 'accounts:login' %}" class="btn btn-outline-secondary">로그인으로</a>
+      <a href="{% url 'books:index' %}" class="btn btn-light">메인</a>
+    </div>
+  </form>
+</div>
+{% endblock content %}
