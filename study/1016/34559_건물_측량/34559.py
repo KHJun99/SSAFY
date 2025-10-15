@@ -14,21 +14,37 @@
 - 임의의 두 좌표로 만들어지는 직사각형 모양의 범위에 새건물을 지을려고 한다.
     - 직사각형에 포함되는 모든 칸에 건물이 포함되지 않아야 한다.
 """
+import sys
+input = sys.stdin.readline
+
+
 def find_house():
-    global zip
+    global zido
     delta = [(0, 1), (1, 0), (0, -1), (-1, 0)]
     for i in range(N + 1):
         for j in range(M + 1):
-            if zido[i][j] == 1:
-                zip.append((i, j))
-            elif zido[i][j] == 0:
+            if zido[i][j] == 0:
+                count = 0
                 for dx, dy in delta:
                     nx, ny = i + dx, j + dy
-                    if 0 <= nx < N + 1 and 0 <= ny < M + 1:
-                        if zido[nx][ny] == 1:
-                            zip.append((i, j))
+                    if 0 <= nx <= N and 0 <= ny <= M and zido[nx][ny] == 1:
+                        count += 1
+                if count == 4:
+                    zido[i][j] = 1
 
+def check(r1, c1, r2, c2):
+    count = 0
+    is_build = 'Yes'
+    for i in range(r1, r2 + 1):
+        for j in range(c1, c2 + 1):
+            if zido[i][j] == 1:
+                count += 1
 
+    if count != 0:
+        is_build = 'No'
+        return is_build, count
+
+    return is_build
 N, M = map(int, input().split())
 zido = [[0] * (M + 1) for _ in range(N + 1)]
 for i in range(1, N + 1):
@@ -42,7 +58,10 @@ for _ in range(Q):
     r1, c1, r2, c2 = map(int, input().split())
     coordinate.append((r1, c1, r2, c2))
 
-zip = []
 find_house()
-print(len(zip))
-print(zip)
+for idx in coordinate:
+    result = check(idx[0], idx[1], idx[2], idx[3])
+    if result != 'Yes':
+        print(*result)
+    else:
+        print(result)
