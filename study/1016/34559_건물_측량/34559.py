@@ -15,22 +15,27 @@
     - 직사각형에 포함되는 모든 칸에 건물이 포함되지 않아야 한다.
 """
 import sys
+from collections import deque
 input = sys.stdin.readline
 
-
-def find_house():
+def fill_house():
     global zido
-    delta = [(0, 1), (1, 0), (0, -1), (-1, 0)]
-    for i in range(N + 1):
-        for j in range(M + 1):
-            if zido[i][j] == 0:
-                count = 0
-                for dx, dy in delta:
-                    nx, ny = i + dx, j + dy
-                    if 0 <= nx <= N and 0 <= ny <= M and zido[nx][ny] == 1:
-                        count += 1
-                if count == 4:
-                    zido[i][j] = 1
+    visited = [[False] * (M + 2) for _ in range(N + 2)]
+    q =deque()
+
+# def find_house():
+#     global zido
+#     delta = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+#     for i in range(N + 1):
+#         for j in range(M + 1):
+#             if zido[i][j] == 0:
+#                 count = 0
+#                 for dx, dy in delta:
+#                     nx, ny = i + dx, j + dy
+#                     if 0 <= nx <= N and 0 <= ny <= M and zido[nx][ny] == 1:
+#                         count += 1
+#                 if count == 4:
+#                     zido[i][j] = 1
 
 def check(r1, c1, r2, c2):
     count = 0
@@ -45,20 +50,19 @@ def check(r1, c1, r2, c2):
         return is_build, count
 
     return is_build
+
+
 N, M = map(int, input().split())
-zido = [[0] * (M + 1) for _ in range(N + 1)]
+zido = [[0] * (M + 2) for _ in range(N + 2)]
 for i in range(1, N + 1):
     row = list(input())
     for j in range(1, M + 1):
         zido[i][j] = int(row[j - 1])
 
 Q = int(input())
-coordinate = []
-for _ in range(Q):
-    r1, c1, r2, c2 = map(int, input().split())
-    coordinate.append((r1, c1, r2, c2))
+coordinate = [tuple(map(int, input().split())) for _ in range(Q)]
 
-find_house()
+
 for idx in coordinate:
     result = check(idx[0], idx[1], idx[2], idx[3])
     if result != 'Yes':
