@@ -14,15 +14,11 @@
 - 임의의 두 좌표로 만들어지는 직사각형 모양의 범위에 새건물을 지을려고 한다.
     - 직사각형에 포함되는 모든 칸에 건물이 포함되지 않아야 한다.
 """
-import sys
-from collections import deque
-input = sys.stdin.readline
-
-def fill_house():
-    global zido
-    visited = [[False] * (M + 2) for _ in range(N + 2)]
-    q =deque()
-
+# 사간초과
+# import sys
+# input = sys.stdin.readline
+#
+#
 # def find_house():
 #     global zido
 #     delta = [(0, 1), (1, 0), (0, -1), (-1, 0)]
@@ -36,36 +32,120 @@ def fill_house():
 #                         count += 1
 #                 if count == 4:
 #                     zido[i][j] = 1
+#
+#
+# def check(r1, c1, r2, c2):
+#     count = 0
+#     is_build = 'Yes'
+#     for i in range(r1, r2 + 1):
+#         for j in range(c1, c2 + 1):
+#             if zido[i][j] == 1:
+#                 count += 1
+#
+#     if count != 0:
+#         is_build = 'No'
+#         return is_build, count
+#
+#     return is_build
+#
+#
+# N, M = map(int, input().split())
+# zido = [[0] * (M + 1) for _ in range(N + 1)]
+# for i in range(1, N + 1):
+#     row = list(input())
+#     for j in range(1, M + 1):
+#         zido[i][j] = int(row[j - 1])
+#
+# Q = int(input())
+# coordinate = []
+# for _ in range(Q):
+#     r1, c1, r2, c2 = map(int, input().split())
+#     coordinate.append((r1, c1, r2, c2))
+#
+# find_house()
+# for idx in coordinate:
+#     result = check(idx[0], idx[1], idx[2], idx[3])
+#     if result != 'Yes':
+#         print(*result)
+#     else:
+#         print(result)
+#----------------------------------------------------
+from collections import deque
+import sys
+input = sys.stdin.readline
 
-def check(r1, c1, r2, c2):
-    count = 0
-    is_build = 'Yes'
-    for i in range(r1, r2 + 1):
-        for j in range(c1, c2 + 1):
-            if zido[i][j] == 1:
-                count += 1
+def fill_house():
+    global visited, zido
+    q = deque()
+    delta = [(0, 1), (1, 0), (-1, 0), (0, -1)]
 
-    if count != 0:
-        is_build = 'No'
-        return is_build, count
+    # 테두리 찾는 과정
+    # 테두리(1행/N행)
+    for j in range(1, M + 1):
+        if zido[1][j] != 1 and not visited[1][j]:
+            visited[1][j] = True
+            q.append((1, j))
+        if zido[N][j] != 1 and not visited[N][j]:
+            visited[N][j] = True
+            q.append((N, j))
+    # 테두리(1열/M열)
+    for i in range(1, N + 1):
+        if zido[i][1] != 1 and not visited[i][1]:
+            visited[i][1] = True
+            q.append((i, 1))
+        if zido[i][M] != 1 and not visited[i][M]:
+            visited[i][M] = True
+            q.append((i, M))
 
-    return is_build
+    while q:
+        x, y = q.popleft()
 
+        for dx, dy in delta:
+            nx, ny = x + dx, y + dy
+            if 0 <= nx <= N and 0 <= ny <= M and not visited[nx][ny] and zido[nx][ny] != 1:
+                visited[nx][ny] = True
+                q.append((nx, ny))
+
+    for i in range(N + 1):
+        for j in range(M + 1):
+            if visited[i][j] == False and zido[i][j] != 1:
+                zido[i][j] = 1
+
+
+def prefix_sum():
+    ps = [[0] * (M + 1) for _ in range(N + 1)]
+
+    for i in range(1, N + 1):
+        hap = 0
+        for j in range(1, M + 1):
+            hap += zido[i][j]
+            ps[i][j] = ps[i-1][j] + hap
+    return ps
+
+def ps_sum(ps, a, b, c, d):
+    return ps[c][d] - ps[a-1][d] - ps[c][b-1] + ps[a-1][b-1]
 
 N, M = map(int, input().split())
-zido = [[0] * (M + 2) for _ in range(N + 2)]
+zido = [[0] * (M + 1) for _ in range(N + 1)]
+
 for i in range(1, N + 1):
     row = list(input())
     for j in range(1, M + 1):
         zido[i][j] = int(row[j - 1])
 
 Q = int(input())
-coordinate = [tuple(map(int, input().split())) for _ in range(Q)]
+visited = [[False] * (M + 1) for _ in range(N + 1)]
+
+fill_house()
+
+ps = prefix_sum()
 
 
-for idx in coordinate:
-    result = check(idx[0], idx[1], idx[2], idx[3])
-    if result != 'Yes':
-        print(*result)
-    else:
-        print(result)
+# for _ in range(Q):
+#     r1, c1, r2, c2 = map(int, input().split())
+#     result = check(r1, c1, r2, c2)
+#
+#     if result == 0:
+#         print('Yes')
+#     else:
+#         print(f'No {result}')

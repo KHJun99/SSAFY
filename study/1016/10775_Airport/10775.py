@@ -8,10 +8,14 @@
     - 비행기 도착 불가능
 - 공항에 도킹시킬 수 있는 최대 비행기 수를 구하여라.
 """
+import sys
+input = sys.stdin.readline
+
 def find(x):
-    if parent[x] != x:
-        parent[x] = find(parent[x])
-    return parent[x]
+    while parent[x] != x:               # 루트가 아닐 동안
+        parent[x] = parent[parent[x]]   # 경로 압축
+        x = parent[x]                   # 부모로 이동
+    return x                            # 루트 반환
 
 
 G = int(input())
@@ -23,11 +27,14 @@ ap = 0
 
 for _ in range(P):
     gi = int(input())
-    gate = find(gi)
-    if gate == 0:
+    gate = find(gi)                     # 가장 큰 게이트 찾기
+
+    if gate == 0:                       # 0번 게이트 -> 도킹 불가능 -> 종료
         break
+
+    parent[gate] = find(gate - 1)       #  gate - 1 번 게이트와 연결 (중복 도킹 불가능 하기 때문)
+
     ap += 1
-    parent[gate] = find(gate - 1)
 
 print(ap)
 
