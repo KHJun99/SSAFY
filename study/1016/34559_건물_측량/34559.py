@@ -76,26 +76,8 @@ input = sys.stdin.readline
 
 def fill_house():
     global visited, zido
-    q = deque()
+    q = deque([(0, 0)])
     delta = [(0, 1), (1, 0), (-1, 0), (0, -1)]
-
-    # 테두리 찾는 과정
-    # 테두리(1행/N행)
-    for j in range(1, M + 1):
-        if zido[1][j] != 1 and not visited[1][j]:
-            visited[1][j] = True
-            q.append((1, j))
-        if zido[N][j] != 1 and not visited[N][j]:
-            visited[N][j] = True
-            q.append((N, j))
-    # 테두리(1열/M열)
-    for i in range(1, N + 1):
-        if zido[i][1] != 1 and not visited[i][1]:
-            visited[i][1] = True
-            q.append((i, 1))
-        if zido[i][M] != 1 and not visited[i][M]:
-            visited[i][M] = True
-            q.append((i, M))
 
     while q:
         x, y = q.popleft()
@@ -140,12 +122,11 @@ fill_house()
 
 ps = prefix_sum()
 
+for _ in range(Q):
+    r1, c1, r2, c2 = map(int, input().split())
+    result = ps_sum(ps, r1, c1, r2, c2)
 
-# for _ in range(Q):
-#     r1, c1, r2, c2 = map(int, input().split())
-#     result = check(r1, c1, r2, c2)
-#
-#     if result == 0:
-#         print('Yes')
-#     else:
-#         print(f'No {result}')
+    if result == 0:
+        print('Yes')
+    else:
+        print(f'No {result}')
