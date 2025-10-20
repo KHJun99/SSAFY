@@ -15,28 +15,32 @@
 import sys
 sys.stdin = open('sample_input.txt')
 
+def count_4(n):
+    count = 0
+    length = 0
+    n = abs(n)
+
+    while n > 0:
+        remain = n % 10
+        n = n // 10
+        if remain >= 4:
+            count += (remain - 1) * (9 ** length)
+        else:
+            count += remain * (9 ** length)
+        length += 1
+    return count
+
 T = int(input())
 
 for tc in range(1, T + 1):
     A, B = map(int, input().split())
 
-    floor = B - A - 1
-    result = 0
+    a = count_4(A)
+    b = count_4(B)
 
-    if -4 < A < 4 and -4 < B < 4:
-        print(f'#{tc} {floor}')
-        continue
-
-    elif floor < 10:
-        print(f'#{tc} {floor - 1}')
-        continue
-
-    floor_str = str(floor)
-    length = len(floor_str)
-
-    for i in range(length):
-        digit = int(floor_str[length - 1 - i]) - 1
-
-        result += digit * (9 ** i)
+    if A < 0 < B :
+        result = a + b - 1
+    else:
+        result = abs(b - a)
 
     print(f'#{tc} {result}')

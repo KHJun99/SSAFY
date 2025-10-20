@@ -15,35 +15,18 @@ N이 주어질 때, 두 사람이 최선을 다해 게임을 한다면 누가 �
 import sys
 sys.stdin = open('sample_input.txt')
 
-# 약 50퍼 gg
-# def dfs(x, cnt):
-#     if 2 * x > N:
-#         return cnt - 1
-#
-#     win_A = (N // 2) + 1
-#     win_B = (N // 2) - 1
-#
-#     a = 2 * x + 1
-#     b = 2 * x
-#
-#     if a == win_A:
-#         return dfs(a, cnt + 1)
-#
-#     elif b == win_B:
-#         return dfs(b, cnt + 1)
-#
-#     else:
-#         return dfs(b, cnt + 1)
-#
-# T = int(input())
-#
-# for tc in range(1, T + 1):
-#     N = int(input())
-#
-#     result = dfs(1, 0)
-#
-#     if result % 2 == 0:
-#         print(f'#{tc} Alice')
-#     else:
-#         print(f'#{tc} Bob')
+T = int(input())
 
+for tc in range(1, T + 1):
+    N = int(input())
+
+    while N > 3:
+        N = N // 2 + 1
+        N = N // 2 - 1
+
+    if N >= 2 or N == 0:
+        winner = 'Alice'
+    else:
+        winner = 'Bob'
+
+    print(f'#{tc} {winner}')
