@@ -15,31 +15,28 @@
 import sys
 sys.stdin = open('sample_input.txt')
 
-def count_4(a, b):
-    if -4 < a < 4 and -4 < b < 4:
-        return 1
-
 T = int(input())
 
 for tc in range(1, T + 1):
     A, B = map(int, input().split())
 
+    floor = B - A - 1
+    result = 0
+
     if -4 < A < 4 and -4 < B < 4:
-        print(f'#{tc} {B - A  -1}')
+        print(f'#{tc} {floor}')
         continue
 
-    forth_1 = abs(A // 100)
-    forth_2 = abs(B // 100)
-
-    hap = forth_1 + forth_2
-
-    if forth_1 < 10 or forth_2 < 10:
-        print(f'#{tc} {B - A - 1 - hap}')
+    elif floor < 10:
+        print(f'#{tc} {floor - 1}')
         continue
 
-    # 1~100까지 4가 포함된 숫자 개수 = 19개
-    minus = 19 * hap
+    floor_str = str(floor)
+    length = len(floor_str)
 
-    print(forth_1, forth_2)
-    print(f'#{tc} {B - A - 1}')
-    print(f'#{tc} {B - A - 1 -minus}')
+    for i in range(length):
+        digit = int(floor_str[length - 1 - i]) - 1
+
+        result += digit * (9 ** i)
+
+    print(f'#{tc} {result}')
