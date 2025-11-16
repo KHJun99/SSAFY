@@ -34,3 +34,6 @@
 - K년이 지난 후 상도의 땅에 살아있는 나무의 개수를 구하는 프로그램 작성
 """
 N, M, K = map(int ,input().split())
+A = [list(map(int, input().split())) for _ in range(N)]
+tree = [list(map(int, input().split())) for _ in range(K)]
+
