@@ -10,7 +10,7 @@
 """
 from collections import deque
 
-
+# 비의 높이를 구하는 함수
 def find_height():
     tmp_height = set()
 
@@ -21,15 +21,58 @@ def find_height():
     return list(tmp_height)
 
 
-def check_region():
-    dx = [0, 1, 0, -1, -1, 1, 1, -1]
-    dy = [1, 0, -1, 0, 1, 1, -1, -1]
+# 최대 안전 영역을 구하는 함수 (BFS)
+def check_region(h_lst):
+    dx = [0, 1, 0, -1]
+    dy = [1, 0, -1, 0]
 
+    # 최대 안전 영역 초기화
+    max_safe_region = float('-inf')
+
+    # 최대값을 구해야 하는 문제 -> 모든 높이 다 확인(브루트포스)
+    for high in h_lst:
+        visited = [[False] * N for _ in range(N)]
+        queue = deque()
+        ground = 0      # 영역의 개수를 세기 위한 변수 초기화
+
+        # 물에 잠긴 위치 체크
+        for r in range(N):
+            for c in range(N):
+                if region[r][c] <= high:
+                    visited[r][c] = True
+
+        # 물에 잠기지 않은 위치를 찾은 후 BFS 탐색
+        for r in range(N):
+            for c in range(N):
+                if not visited[r][c]:
+                    visited[r][c] = True
+                    queue.append((r, c))
+
+                    while queue:
+                        cx, cy = queue.popleft()
+
+                        for idx in range(4):
+                            nx, ny = cx + dx[idx], cy + dy[idx]
+                            if 0 <= nx < N and 0 <= ny < N and not visited[nx][ny]:
+                                visited[nx][ny] = True
+                                queue.append((nx, ny))
+
+                    ground += 1
+
+        # 최대 안전 영역 갱신
+        if ground > max_safe_region:
+            max_safe_region = ground
+
+    return max_safe_region
 
 
 N = int(input())
 region = [list(map(int, input().split())) for _ in range(N)]
 
-height = find_height()
+# 비가 안온 경우도 있기 때문에 0 추가
+height = [0] + find_height()
 
-print(height)
+result = check_region(height)
+
+print(result)
+
