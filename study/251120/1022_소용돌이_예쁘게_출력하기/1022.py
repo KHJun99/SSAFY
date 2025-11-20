@@ -20,3 +20,39 @@
 """
 r1, c1, r2, c2 = map(int, input().split())
 
+n = c2 - c1
+m = r2 - r1
+
+tmp = []
+for r in range(r1, r2 + 1):
+    for c in range(c1, c2 + 1):
+        k = max(abs(r), abs(c))
+
+        # k=0 (원점) 특별 처리
+        if k == 0:
+            tmp.append(1)
+            continue
+
+        # k층 시작 번호 계산 (k >= 1)
+        pre_end = (2 * k - 1) ** 2 + 1
+
+        # 오프셋 계산
+        if c == k:
+            offset = k - 1 - r
+        elif r == -k:
+            offset = 2 * k + k - c
+        elif c == -k:
+            offset = 4 * k + k + r
+        elif r == k:
+            offset = 6 * k + k + c
+
+        now_num = pre_end + offset
+        tmp.append(now_num)
+
+# 최댓값의 자릿수 계산
+max_num = max(tmp)
+width = len(str(max_num))
+
+# 출력
+for i in range(0, len(tmp), n + 1):
+    print(" ".join(f"{x:{width}}" for x in tmp[i: i + n + 1]))
