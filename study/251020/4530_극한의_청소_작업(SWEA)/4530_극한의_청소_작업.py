@@ -35,8 +35,10 @@ for tc in range(1, T + 1):
     length = len(floor_str)
 
     for i in range(length):
-        digit = int(floor_str[length - 1 - i]) - 1
-
-        result += digit * (9 ** i)
+        digit = int(floor_str[length - 1 - i])
+        if digit < 4:
+            result += digit * (9 ** i)
+        
+        result += digit - 1 * (9 ** i)
 
     print(f'#{tc} {result}')
