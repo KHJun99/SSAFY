@@ -1,0 +1,53 @@
+{% extends 'movies/base.html' %}
+
+{% block title %}영화 상세 페이지{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">영화 상세 페이지</h1>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h2 class="card-title">{{ movie.title }}</h2>
+        <p class="card-text">{{ movie.description }}</p>
+        <p class="card-text"><strong>감독:</strong> {{ movie.director }}</p>
+        <p class="card-text"><strong>장르:</strong> {{ movie.get_genre_display }}</p>
+        <p class="card-text"><strong>평점:</strong> {{ movie.score }}</p>
+        
+        <a href="{% url 'movies:update' movie.pk %}" class="btn btn-warning">UPDATE</a>
+        
+        <form action="{% url 'movies:delete' movie.pk %}" method="POST" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">DELETE</button>
+        </form>
+        
+        <a href="{% url 'movies:index' %}" class="btn btn-secondary">BACK</a>
+    </div>
+</div>
+
+<h3>댓글 목록</h3>
+<hr>
+
+{% if comments %}
+    {% for comment in comments %}
+    <div class="mb-3">
+        <p>{{ comment.content }}</p>
+        <form action="{% url 'movies:comments_delete' movie.pk comment.pk %}" method="POST" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger btn-sm">DELETE</button>
+        </form>
+    </div>
+    {% endfor %}
+{% else %}
+    <p>아직 댓글이 없네요...</p>
+{% endif %}
+
+<hr>
+<h4>댓글 작성</h4>
+<form action="{% url 'movies:comments_create' movie.pk %}" method="POST">
+    {% csrf_token %}
+    {{ comment_form.content }}
+    <button type="submit" class="btn btn-primary mt-2">작성</button>
+</form>
+
+<a href="{% url 'movies:index' %}" class="btn btn-secondary mt-3">BACK</a>
+{% endblock %}
