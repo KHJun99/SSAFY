@@ -29,16 +29,23 @@
 def method1(start, size):
     global M
 
-    if start + 1 <= N:
+    if start == N:
+        return size
+
+    if start + 2 < N:
         start += 1
         size += array[start + 1]
         M -= 1
+
 
 # 방법 2
 def method2(start, size):
     global M
 
-    if start + 2 <= N:
+    if start == N:
+        return size
+
+    if start + 4 < N:
         start += 2
         size //= 2 + array[start + 2]
         M -= 1
@@ -50,4 +57,6 @@ array = list(map(int, input().split()))
 
 snowball_size = 1
 starting = 0
+
+while starting != N:
 
