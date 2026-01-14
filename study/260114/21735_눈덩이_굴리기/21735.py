@@ -25,38 +25,28 @@
 
 - 대회 시간 내에 가장 크게 만들 수 있는 눈덩이의 크기를 구하시오.
 """
-# 방법 1
-def method1(start, size):
-    global M
+def make_snowball(size, time, idx):
+    global max_size
 
-    if start == N:
-        return size
+    if time == M or idx == N:
+        max_size = max(max_size, size)
+        return
 
-    if start + 2 < N:
-        start += 1
-        size += array[start + 1]
-        M -= 1
+    if idx + 1 <= N:
+        make_snowball(size + array[idx + 1], time + 1, idx + 1)
 
+    if idx + 2 <= N:
+        make_snowball((size // 2) + array[idx + 2], time + 1, idx + 2)
 
-# 방법 2
-def method2(start, size):
-    global M
-
-    if start == N:
-        return size
-
-    if start + 4 < N:
-        start += 2
-        size //= 2 + array[start + 2]
-        M -= 1
 
 # 1 <= N <= 100, 1 <= M <= 10
 # N : 앞마당의 길이, M : 대회의 시간
 N, M = map(int, input().split())
-array = list(map(int, input().split()))
+array = [0] + list(map(int, input().split()))
 
 snowball_size = 1
-starting = 0
+max_size = float('-inf')
 
-while starting != N:
+make_snowball(snowball_size, 0, 0)
 
+print(max_size)
