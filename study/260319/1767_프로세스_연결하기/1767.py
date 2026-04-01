@@ -60,11 +60,14 @@ def dfs(core_cnt, wire):
             dfs(core_cnt + 1, wire + length)
             while nr != 0 or nr != N - 1 or nc != 0 or nc != N - 1:
                 init[nr][nc] = 0
+                nr -= dr[idx]
+                nc -= dc[idx]
                 
+
     
     dfs(core_cnt + 1, wire)
     
-
+ 
 T = int(input())
 
 for tc in range(1, T + 1):
